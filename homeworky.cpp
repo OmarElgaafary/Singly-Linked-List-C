@@ -27,43 +27,6 @@ public:
         last_el->next = new_node;
     }
 
-    void InsertionatBeginning(int data) {
-
-        Node* new_node = new Node();
-        new_node->data = data;
-        new_node->next = root_;
-        root_ = new_node;
-
-    }
-
-    void insertionposition(int position, int data) {
-        Node* new_node = new Node();
-        new_node->data = data;
-        Node* tmp = root_;
-        int i = 0;
-
-        if (position == 0) {
-            new_node->next = root_;
-            root_ = new_node;
-            return;
-        }
-
-        while (tmp != nullptr && i < position - 1) {
-            tmp = tmp->next;
-            i++;
-        }
-
-
-        if (i == position - 1)
-        {
-            new_node->next = tmp->next;
-            tmp->next = new_node;
-            return;
-        }
-
-
-    }
-
     void Delete(int key) {
 
         Node* t, * t0;
@@ -73,13 +36,13 @@ public:
 
         while (t != nullptr) {
             if (i == key) {
-                // we found it delete here
                 if (key == 0) {
                     root_ = t->next;
                     delete t;
-                    break;
+                    return;
                 }
-
+               
+                // we found it delete here
                 t0->next = t->next;
                 delete t;
                 break;
@@ -120,6 +83,43 @@ public:
         }
     }
 
+    void InsertAtBeginning(int data) {
+        Node* new_node = new Node();
+        new_node->data = data;
+        new_node->next = root_;
+        root_ = new_node;
+
+    } 
+#
+    void InsertAtPosition(int position, int data) {
+        Node* new_node = new Node();
+        new_node->data = data;
+
+        if (position == 0) {            
+           InsertAtBeginning(data);
+        }
+
+        Node* tmp = root_;
+        int i = 0;
+
+        while (tmp != nullptr && i < position - 1) {
+            tmp = tmp->next;
+            i++;
+        } 
+
+        if (i == position - 1 && tmp != nullptr) {
+            new_node->next = tmp->next;
+            tmp->next = new_node;
+            return;
+           
+        }
+        else {
+            delete new_node;
+            return;
+        }
+
+    } 
+
 
 
 private:
@@ -134,20 +134,16 @@ int main()
     // 2- ADD InsertAtBeginning done
     // 3- Add InsertAtPosition(int position, int data) done
 
-    LinkedList l1;
-    l1.Add(2006);
-    l1.Add(2005);
-    l1.Add(2004);
-    l1.Add(2003);
-    l1.Add(2002);
-    l1.Add(2001);
-    l1.Add(2000);
-    l1.InsertionatBeginning(5);
-    l1.insertionposition(6, 10);
-    l1.PrintList();
-
-    return 0;
-}
+    LinkedList New;
+    New.Add(0);
+    New.Add(5);
+    New.Add(10);
+    New.Add(15);
+    New.Add(20);
+    New.Add(25);
+    New.InsertAtPosition(2, 50);
+    New.PrintList();
+ }
 
 
 
