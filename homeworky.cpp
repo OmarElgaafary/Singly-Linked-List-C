@@ -90,14 +90,16 @@ public:
         root_ = new_node;
 
     } 
-#
-    void InsertAtPosition(int position, int data) {
-        Node* new_node = new Node();
-        new_node->data = data;
 
+    void InsertAtPosition(int position, int data) {
+         
         if (position == 0) {            
            InsertAtBeginning(data);
+            return;
         }
+        
+        Node* new_node = new Node();
+        new_node->data = data;
 
         Node* tmp = root_;
         int i = 0;
