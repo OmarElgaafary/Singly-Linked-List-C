@@ -112,7 +112,7 @@ public:
 			std::cout << "Position out of bounds." << std::endl;
 			return;
 		}
-		
+
 		int i = 0;
 		while (i != pos - 1 && tmp->next != nullptr)
 		{
@@ -127,8 +127,9 @@ public:
 	void delete_at_pos(int n)
 	{
 		Node* t0 = head; //initalize node pointer
-		
-		
+
+		if (head == nullptr) return;
+
 		if (n == 0 && t0->next != nullptr)
 		{
 			Node* t1 = t0->next;
@@ -144,6 +145,9 @@ public:
 			t0 = t0->next;
 			i++;
 		}
+
+		if (t0->next == nullptr) return;
+
 		Node* t1 = t0->next;
 		t0->next = t1->next;
 		delete t1;
@@ -153,7 +157,6 @@ public:
 
 int main()
 {
-	int a[3] = {3, 4 ,5};
 
 	LinkedList newlist;
 
@@ -170,8 +173,8 @@ int main()
 	newlist.delete_at_pos(5);
 	newlist.printList();
 
-	
-	
+
+
 
 
 }
