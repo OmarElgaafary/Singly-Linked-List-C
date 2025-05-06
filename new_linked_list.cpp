@@ -124,27 +124,54 @@ public:
 
 	}
 
+	void delete_at_pos(int n)
+	{
+		Node* t0 = head; //initalize node pointer
+		
+		
+		if (n == 0 && t0->next != nullptr)
+		{
+			Node* t1 = t0->next;
+			head = t1;
+			delete t0;
+			return;
+
+		}
+
+		int i = 0;
+		while (i < n - 1 && t0->next != nullptr) // loop through list for (n-1)th position
+		{
+			t0 = t0->next;
+			i++;
+		}
+		Node* t1 = t0->next;
+		t0->next = t1->next;
+		delete t1;
+	}
+
 };
 
 int main()
 {
+	int a[3] = {3, 4 ,5};
+
 	LinkedList newlist;
-	newlist.addNode(0);
-	newlist.addNode(2);
-	newlist.addNode(4);
-	newlist.addNode(6);
-	newlist.addNode(8);
+
+
+	newlist.addNode(5);
 	newlist.addNode(10);
-	newlist.addNode(12);
-
-
-
+	newlist.addNode(20);
+	newlist.addNode(20);
+	newlist.addNode(30);
+	newlist.addNode(40);
+	newlist.addNode(50);
 	newlist.printList();
-
 	std::cout << "---------------------------------------\n\n";
-	
-	newlist.insert_at_position(5, 9);
+	newlist.delete_at_pos(5);
 	newlist.printList();
+
+	
+	
 
 
 }
