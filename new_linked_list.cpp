@@ -128,12 +128,11 @@ public:
 	{
 		Node* t0 = head; //initalize node pointer
 
-		if (head == nullptr) return;
+		if (head == nullptr || n < 0) return;
 
-		if (n == 0 && t0->next != nullptr)
+		if (n == 0)
 		{
-			Node* t1 = t0->next;
-			head = t1;
+			head = head->next;
 			delete t0;
 			return;
 
@@ -146,31 +145,48 @@ public:
 			i++;
 		}
 
-		if (t0->next == nullptr) return;
+		if (t0->next == nullptr) return; // if (n-1)th position has n be a nullptr
 
 		Node* t1 = t0->next;
 		t0->next = t1->next;
 		delete t1;
 	}
 
+	void reverse_list()
+	{
+		Node* lead = head, * tmp = head, * prev = nullptr;
+		if (head->next == nullptr)
+		{
+			std::cout << "Insufficient amount of nodes available.\n";
+			return;
+		}
+		do {
+			lead = lead->next;
+			tmp->next = prev;
+			prev = tmp;
+			tmp = lead;
+
+		} while (lead != nullptr);
+
+		head = prev;
+
+	}
+
 };
 
 int main()
 {
-
 	LinkedList newlist;
 
 
 	newlist.addNode(5);
-	newlist.addNode(10);
-	newlist.addNode(20);
-	newlist.addNode(20);
-	newlist.addNode(30);
-	newlist.addNode(40);
-	newlist.addNode(50);
+	newlist.addNode(4);
+	newlist.addNode(3);
+	newlist.addNode(2);
+	newlist.addNode(1);
 	newlist.printList();
 	std::cout << "---------------------------------------\n\n";
-	newlist.delete_at_pos(5);
+	newlist.reverse_list();
 	newlist.printList();
 
 
