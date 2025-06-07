@@ -1,21 +1,63 @@
 #include <iostream>
 
 struct Node {
-	int data;
+	int value;
 	Node* next;
 };
 
-class LinkedList {
-
+class linked_list
+{
 private:
-	Node* head = nullptr;
+	Node* root = nullptr;
 
 public:
 
-	void printList() {
-		Node* tmp = head;
+	int getLength()
+	{
+		Node* new_node = new Node();
+		new_node = root;
+		int count = 0;
+		while (new_node != nullptr)
+		{
+			new_node = new_node->next;
+			count++;
+		}
+		return count;
+	}
 
-		if (head == nullptr)
+	Node* getlast()
+	{
+		Node* tmp = new Node();
+		tmp = root;
+
+		while (tmp->next != nullptr)
+		{
+			tmp = tmp->next;
+		}
+
+		return tmp;
+	}
+
+	void createNode(int data)
+	{
+		Node* new_node = new Node();
+		new_node->value = data;
+		new_node->next = nullptr;
+
+		if (root == nullptr)
+		{
+			root = new_node;
+			return;
+		}
+		Node* last = getlast();
+		last->next = new_node;
+	}
+
+	void printList()
+	{
+		Node* tmp = new Node();
+		tmp = root;
+		if (root == nullptr)
 		{
 			std::cout << "[Empty]\n";
 			return;
@@ -24,173 +66,154 @@ public:
 		int i = 0;
 		while (tmp != nullptr)
 		{
-			std::cout << "[" << i << "]" << "(" << tmp->data << ")" << std::endl;
+			std::cout << "[" << i << "] " << "(" << tmp->value << ")\n";
 			tmp = tmp->next;
 			i++;
 		}
 
+		
 	}
 
-	void addNode(int n)
+	void insert_at_position(int data, int position)
 	{
-		Node* new_node = new Node();
-		new_node->data = n;
-		new_node->next = nullptr;
-		Node* last = getlastEl();
-		if (last == nullptr)
+		if (position > getLength() || position < 0 || root == nullptr)
 		{
-			head = new_node;
+			std::cout << "[Invalid Position]\n";
 			return;
 		}
-		else {
-			last->next = new_node;
-		}
 
-
-	}
-
-	Node* getlastEl()
-	{
-		Node* tmp = head;
-
-		if (tmp == nullptr)
-		{
-			return tmp;
-		}
-
-		while (tmp->next != nullptr)
-		{
-			tmp = tmp->next;
-		}
-		return tmp;
-	}
-
-	void insert_node_at_beginning(int x)
-	{
-		Node* first_node = new Node();
-		first_node->data = x;
-		first_node->next = head;
-		head = first_node;
-	}
-
-	Node* find_position(int position)
-	{
+		// find the nth position
 		Node* tmp = new Node();
-		tmp = head;
-		int i = 0;
-
-		while (i != position && tmp->next != nullptr)
-		{
-			tmp = tmp->next;
-			i++;
-
-		}
-		std::cout << tmp->data << std::endl;
-		return tmp;
-	}
-
-	int linked_length()
-	{
-		Node* tmp = head;
-		int i = 0;
-		while (tmp != nullptr)
-		{
-			tmp = tmp->next;
-			i++;
-		}
-		return i;
-	}
-
-	void insert_at_position(int pos, int x)
-	{
 		Node* new_node = new Node();
-		new_node->data = x;
-		Node* tmp = head;
+		new_node->value = data;
 
-		if (pos > linked_length() || pos < 0)
+		if (position == 0)
 		{
-			std::cout << "Position out of bounds." << std::endl;
+			new_node->next = root;
+			root = new_node;
 			return;
 		}
 
-		int i = 0;
-		while (i != pos - 1 && tmp->next != nullptr)
+		tmp = root;
+
+		int current = 0;
+		while (current != position - 1 && tmp->next != nullptr)
 		{
 			tmp = tmp->next;
-			i++;
+			current++;
 		}
 		new_node->next = tmp->next;
 		tmp->next = new_node;
 
 	}
 
-	void delete_at_pos(int n)
+	void delete_at_position(int position)
 	{
-		Node* t0 = head; //initalize node pointer
-
-		if (head == nullptr || n < 0) return;
-
-		if (n == 0)
-		{
-			head = head->next;
-			delete t0;
+		if (root == nullptr || position < 0 || position > getLength())
 			return;
+		// initalizing temporary variable
+		Node* tmp = new Node();
+		tmp = root;
 
+		//deleteing first node
+		if (position == 0)
+		{
+			root = tmp->next;
+			delete tmp;
+			return;
 		}
 
+		// find deleting position
 		int i = 0;
-		while (i < n - 1 && t0->next != nullptr) // loop through list for (n-1)th position
+		while (i != position - 1 && tmp->next != nullptr)
 		{
-			t0 = t0->next;
+			tmp = tmp->next;
 			i++;
 		}
 
-		if (t0->next == nullptr) return; // if (n-1)th position has n be a nullptr
-
-		Node* t1 = t0->next;
-		t0->next = t1->next;
-		delete t1;
+		Node* tmp2 = tmp->next;
+		tmp->next = tmp2->next;
+		delete tmp2;
 	}
 
-	void reverse_list()
+	void reverse_linked()
 	{
-		Node* lead = head, * tmp = head, * prev = nullptr;
-		if (head->next == nullptr)
+		Node* curr = root;
+		Node* tmp = curr->next;
+		Node* tmp2 = tmp->next;
+
+		root->next = nullptr;
+
+		while (tmp2 != nullptr)
 		{
-			std::cout << "Insufficient amount of nodes available.\n";
+			tmp->next = curr;
+			curr = tmp;
+			tmp = tmp2;
+			tmp2 = tmp2->next;
+		}
+
+		tmp->next = curr;
+		root = tmp;
+	}
+
+	void print_recursion(Node* node)
+	{
+		if (node == nullptr)
+			return;
+
+		std::cout << node->value << " ";
+		print_recursion(node->next);
+	}
+
+	void print_reverse_recursion(Node* node)
+	{
+		if (node == nullptr)
+			return;
+		print_reverse_recursion(node->next);
+		std::cout << node->value << " ";
+	}
+
+	Node* getRoot()
+	{
+		return root;
+	}
+
+	void reverse_recursion(Node* node)
+	{
+
+		if (node->next == nullptr)
+		{
+			root = node;
 			return;
 		}
-		do {
-			lead = lead->next;
-			tmp->next = prev;
-			prev = tmp;
-			tmp = lead;
 
-		} while (lead != nullptr);
+		reverse_recursion(node->next);
 
-		head = prev;
-
+		node->next->next = node;
+		node->next = nullptr;
 	}
 
 };
 
+
+
 int main()
 {
-	LinkedList newlist;
+	linked_list list;
+	list.createNode(1);
+	list.createNode(2);
+	list.createNode(3);
+	list.createNode(4);
+	list.createNode(5);
+	list.createNode(6);
+	list.createNode(7);
+	list.printList();
+	std::cout << "-----------------------\n\n";
 
+	list.reverse_linked();
+	list.printList();
 
-	newlist.addNode(5);
-	newlist.addNode(4);
-	newlist.addNode(3);
-	newlist.addNode(2);
-	newlist.addNode(1);
-	newlist.printList();
-	std::cout << "---------------------------------------\n\n";
-	newlist.reverse_list();
-	newlist.printList();
-
-
-
-
-
+	std::cout << "-------------------------\n\n";
+	list.reverse_recursion(list.getRoot());
+	list.printList();
 }
