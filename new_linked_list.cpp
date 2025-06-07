@@ -193,6 +193,18 @@ public:
 		node->next = nullptr;
 	}
 
+	void free_list()
+	{
+		Node* tmp;
+		while (root != nullptr)
+		{
+			tmp = root;
+			root = root->next;
+			delete tmp;
+	
+		}
+	}
+
 };
 
 
